@@ -1,0 +1,275 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">
+	function random(min,max){		//通用随机数
+		return Math.floor(min+Math.random()*(max-min));
+	}
+	function shape(){				//生成纸牌花色
+		var rand=random(1,4);
+		var shape=null;
+		switch(rand){
+			case 1: shape='c';break;
+			case 2: shape='d';break;
+			case 3: shape='h';break;
+			case 4: shape='s';break;
+			default: shape=null;
+		}
+		return shape;
+	}
+	function randnum(){			//生成纸牌数
+		return random(1,13);
+	}
+	function number(){			//生成纸牌
+		var num=shape()+randnum();
+		return num;
+	}
+	function produce(){			//生成5张牌
+		var arr=new Array(5);
+		for(var i=0;i<5;i++){
+			arr[i]=number();
+			for(var j = 0; j < i; j++){
+				if(arr[i] == arr[j]){
+					i--;
+					}
+			}
+		}
+		return arr;
+	}
+
+	function cutpro(num1,num2,num3,num4,num5){  //取值
+		var num11=num1.match("[0-9]+");
+		var num22=num2.match("[0-9]+");
+		var num33=num3.match("[0-9]+");
+		var num44=num4.match("[0-9]+");
+		var num55=num5.match("[0-9]+");
+		var result=new Array(num11,num22,num33,num44,num55);
+		return result;
+	}
+
+	function change(num1,num2,num3,num4,num5){  //如果纸牌的面值大于10则取10
+		var num11,num22,num33,num44,num55;
+		if(num1>10){
+			num11=10;
+		}
+		else{
+			num11=num1;
+		}
+		if(num2>10){
+			num22=10;
+		}
+		else{
+			num22=num2;
+		}
+		if(num3>10){
+			num33=10;
+		}
+		else{
+			num33=num3;
+		}
+		if(num4>10){
+			num44=10;
+		}
+		else{
+			num44=num4;
+		}
+		if(num5>10){
+			num55=10;
+		}
+		else{
+			num55=num5;
+		}		
+		var result=new Array(num11,num22,num33,num44,num55);
+		return result;
+	}
+	function robot(){		//机器人
+		var obt=produce();
+		var obt1=cutpro(obt[0],obt[1],obt[2],obt[3],obt[4]);
+		var obt2=change(obt1[0],obt1[1],obt1[2],obt1[3],obt1[4]);
+		//return obt1;
+		var result=calc(obt2[0],obt2[1],obt2[2],obt2[3],obt2[4]);
+		return result;
+
+	}
+	function calc(t1,t2,t3,t4,t5){   //算牛规则
+		if((t1+t2+t3)%10==0&&t4+t5==10)
+			return 10;
+		if((t1+t2+t3)%10==0&&t4+t5!=10)
+			return (t4+t5)%10;
+		if((t1+t2+t4)%10==0&&t3+t5==10)
+			return 10;
+		if((t1+t2+t4)%10==0&&t3+t5!=10)
+			return (t3+t5)%10;
+		if((t1+t2+t5)%10==0&&t3+t4==10)
+			return 10;
+		if((t1+t2+t5)%10==0&&t3+t4!=10)
+			return (t3+t4)%10;
+		if((t1+t3+t4)%10==0&&t2+t5==10)
+			return 10;
+		if((t1+t3+t4)%10==0&&t2+t5!=10)
+			return (t2+t5)%10;
+		if((t1+t3+t5)%10==0&&t2+t4==10)
+			return 10;
+		if((t1+t3+t5)%10==0&&t2+t4!=10)
+			return (t2+t4)%10;
+		if((t1+t5+t4)%10==0&&t3+t2==10)
+			return 10;
+		if((t1+t5+t4)%10==0&&t3+t2!=10)
+			return (t3+t2)%10;
+		if((t3+t2+t4)%10==0&&t5+t1==10)
+			return 10;
+		if((t3+t2+t4)%10==0&&t1+t5!=10)
+			return (t1+t5)%10;
+		if((t3+t2+t5)%10==0&&t1+t4==10)
+			return 10;
+		if((t3+t2+t5)%10==0&&t1+t4!=10)
+			return (t1+t4)%10;
+		if((t5+t2+t4)%10==0&&t3+t1==10)
+			return 10;
+		if((t5+t2+t4)%10==0&&t3+t1!=10)
+			return (t3+t1)%10;
+		if((t3+t5+t4)%10==0&&t1+t2==10)
+			return 10;
+		if((t3+t5+t4)%10==0&&t1+t2!=10)
+			return (t1+t2)%10;
+		else
+			return 0;
+	}
+	function start(){		//玩家
+		var obt=produce();
+		var obt1=cutpro(obt[0],obt[1],obt[2],obt[3],obt[4]);
+		var temp="images/bg_";
+		var card1=temp+obt[0]+".gif";
+		var card2=temp+obt[1]+".gif";
+		var card3=temp+obt[2]+".gif";
+		var card4=temp+obt[3]+".gif";
+		var card5=temp+obt[4]+".gif";
+		var obt2=change(obt1[0],obt1[1],obt1[2],obt1[3],obt1[4]);		
+		document.getElementById("1").src=card1;
+		document.getElementById("2").src=card2;
+		document.getElementById("3").src=card3;
+		document.getElementById("4").src=card4;
+		document.getElementById("5").src=card5;
+		document.getElementById("1").value=obt2[0];
+		document.getElementById("2").value=obt2[1];
+		document.getElementById("3").value=obt2[2];
+		document.getElementById("4").value=obt2[3];
+		document.getElementById("5").value=obt2[4];
+		//var currentBtn = document.getElementById(55);
+	}
+	function artificial(){
+		var level=0;
+		var result=0;
+		//var result1=null;
+		var str=document.getElementsByName("card");
+		var str2=document.getElementsByName("pic");
+		var values=new Array();
+		var values2=new Array();
+ 		for(var i=0;i<str.length;i++){
+			
+					if(str[i].checked==true)
+					{
+               		values.push(str2[i].value);
+                    }
+                    else
+                    {
+                    	values2.push(str2[i].value);
+                    	//alert(values2);
+                    }
+				
+			}
+		//alert(parseInt(values[0])+parseInt(values[1])+parseInt(values[2])%10);
+		if ((parseInt(values[0])+parseInt(values[1])+parseInt(values[2]))%10==0) {
+			result=(parseInt(values2[0])+parseInt(values2[1]))%10;
+			alert(result);
+			if (result==0) {
+				result="牛";
+			}
+		}else{
+			result="没";
+		}		 
+
+		var robot=player();
+		//var robot1=robot.sort(function(a,b){return a<b?1:-1});
+		//for(int i=0;i<robot1.length;i++){
+		//	if(result==robot1){
+		//		level=i+1;
+		//	}
+		//}
+		var p1=null;
+		var p2=null;
+		var p3=null;
+		if(robot[0]==0){
+			p1="没";
+		}else{
+			p1=robot[0];
+			if(p1==10){
+				p1="牛";
+			}
+		}
+		if(robot[1]==0){
+			p2="没";
+		}else{
+			p2=robot[1];
+			if(p2==10){
+				p2="牛";
+			}
+		}
+		if(robot[2]==0){
+			p3="没";
+		}else{
+			p3=robot[2];
+			if(p3==10){
+				p3="牛";
+			}
+		}
+		alert("电脑玩家1："+p1+"牛\n"+"电脑玩家2："+p2+"牛\n"+"电脑玩家3："+p3+"牛\n"+"您："+result+"牛");
+
+	}
+	function  check(){
+		var checkedCount=0;
+		for(var i=0;i<myForm.card.length;i++){
+			if(myForm.card[i].checked){
+				checkedCount++;
+			}
+		}
+		if(checkedCount>3){
+			alert("只能选3张牌");
+			document.getElementsByTagName("card").checked = false;
+			return false;
+		}
+	} 
+
+	function player(){
+		var player1=robot();
+		var player2=robot();
+		var player3=robot();
+		var result=new Array(player1,player2,player3);
+		return result;
+			}
+	function debug(){
+		  alert(player());
+	}
+  </script>
+
+</head>
+<body>
+	<center>
+		<h3>斗牛</h3>
+		<h5>author:wangzhnxin</h5>
+
+	<form name="myForm" method="post" id="myForm" action="">
+	<table width="200" border="1" align="center" bordercolor="#ECE9D8">
+  		<tr>
+    		<td><img  name="pic" id=1 src="images/kuang.jpg"><input type='checkbox' id="card" name="card" onClick="return check()" value=1 /></td>
+    		<td><img name="pic" id=2 src="images/kuang.jpg"><input type='checkbox' id="card" name="card" onClick="return check()" value=2 /></td>
+    		<td><img name="pic" id=3 src="images/kuang.jpg"><input type='checkbox' id="card" name="card" onClick="return check()" value=3 /></td>
+   			<td><img name="pic" id=4 src="images/kuang.jpg"><input type='checkbox' id="card" name="card" onClick="return check()" value=4 /></td>
+    		<td><img name="pic" id=5 src="images/kuang.jpg"><input type='checkbox' id="card" name="card" onClick="return check()" value=5 /></td>
+  		</tr>
+	</table>
+	<input id=55 type="button" value="开始" onClick="start()" /><input type="button" value="提交" onClick="artificial()"><input type="button" value="debug" onClick="debug()"> 
+</form> 
+	</center>
+</body>
+</html>
